@@ -6,8 +6,9 @@ export function useSidebar() {
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 768)
-      setIsOpen(window.innerWidth >= 768)
+      const mobile = window.innerWidth < 768
+      setIsMobile(mobile)
+      setIsOpen(!mobile)
     }
 
     checkScreenSize()
