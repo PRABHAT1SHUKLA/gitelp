@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { useCallback , useState } from 'react'
+import { useCallback, useState } from 'react'
 import { LayoutDashboard, Bot, Settings, Menu, ChevronRight, Users, FileText, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -11,6 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { useSidebar } from '@/hooks/use-sidebar'
+import { Sidebar, SidebarGroup, SidebarGroupContent } from './ui/sidebar'
 
 const items = [
   {
@@ -32,6 +33,22 @@ const items = [
     items: [
       { title: "Settings", url: "/settings", icon: Settings },
     ]
+  }
+]
+
+const projects = [
+  
+  {
+    name: "Project 1"
+  },
+  {
+    name: "Project 2"
+  },
+  {
+    name: "Project 3"
+  },
+  {
+    name: "Project 4"
   }
 ]
 
@@ -82,8 +99,12 @@ export function ModernSidebar() {
               </CollapsibleContent>
             </Collapsible>
           ))}
+
+         
         </nav>
       </ScrollArea>
+
+
       <div className="p-4 text-sm text-center text-muted-foreground">
         © 2023 Your Company
       </div>

@@ -1,10 +1,12 @@
 "use client";
 
 import React from "react";
+
+import { Bot, CreditCard, Handshake, LayoutDashboard } from "lucide-react";
+import { Sidebar,SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils"; // Utility function for conditional classNames
 import Link from "next/link";
-import { Bot, LayoutDashboard } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const items = [
   {
@@ -18,53 +20,105 @@ const items = [
     icon: Bot,
   },
   {
-    title: "Reports",
-    url: "/reports",
-    icon: LayoutDashboard,
+    title: "Meetings",
+    url: "/meetings",
+    icon: Handshake,
   },
   {
-    title: "Settings",
-    url: "/settings",
-    icon: LayoutDashboard,
+    title: "Billing",
+    url: "/billing",
+    icon: CreditCard,
   },
 ];
 
-export default function Sidebar() {
-  const pathname = usePathname();
+const projects = [
+  {
+    name : "Project 1"
+  },
+  {
+    name : "Project 2"
+  },
+  {
+    name : "Project 3"
+  }
 
+]
+
+export default function AppSidebar() {
+
+  const pathName = usePathname()
   return (
-    <aside className="h-screen w-64 bg-gray-900 text-white flex flex-col">
-      {/* Sidebar Header */}
-      <div className="p-4 text-lg font-bold border-b border-gray-700">
-        My App
-      </div>
+    <Sidebar collapsible="icon" variant="floating">
+       <SidebarHeader>
+          Logo
+       </SidebarHeader>
 
-      {/* Sidebar Items */}
-      <nav className="flex-1 overflow-y-auto">
-        <ul className="space-y-2 p-4">
-          {items.map((item, index) => (
-            <li key={index}>
-              <Link
-                href={item.url}
-                className={cn(
-                  "flex items-center gap-4 px-4 py-2 rounded-md transition",
-                  pathname === item.url
-                    ? "bg-gray-700 text-white"
-                    : "text-gray-400 hover:bg-gray-800 hover:text-white"
-                )}
-              >
-                <item.icon className="w-5 h-5" />
-                <span>{item.title}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+       <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Application</SidebarGroupLabel>
 
-      {/* Sidebar Footer */}
-      <div className="p-4 border-t border-gray-700 text-sm text-gray-400">
-        © 2025 My App
-      </div>
-    </aside>
-  );
+
+          <SidebarGroupContent>
+            <SidebarMenu>
+            {items.map((item)=>{
+              return(
+                <SidebarMenuItem key={item.title}>
+                   <SidebarMenuButton asChild>
+                     <Link href={item.url} className={cn({
+                      '!bg-primary !text-white': pathName === item.url})}
+                      // className={cn(
+                      //   'block px-4 py-2 rounded transition-colors duration-300',
+                      //   {
+                      //     'bg-blue-600 text-white': activeLink === link.href,
+                      //     'text-gray-300 hover:bg-gray-700': activeLink !== link.href,
+                      //   }
+                      // )}
+                      >
+                        <item.icon/>
+                        {item.title}
+                      </Link>
+
+                   </SidebarMenuButton>
+                </SidebarMenuItem>
+              )
+            })}
+            </SidebarMenu>
+            
+
+          </SidebarGroupContent>
+
+
+        </SidebarGroup>
+
+        <SidebarGroup>
+
+        <SidebarGroupLabel>Your Projects</SidebarGroupLabel>
+
+        <SidebarGroupContent>
+           <SidebarMenu>
+            {projects.map(project=>{
+              return(
+                <SidebarMenuItem key={project.name}>
+                  <SidebarMenuButton asChild>
+                    <div>
+                      <div className={cn(
+                        'rounded-md border  size-6 flex items-center justify-center text-sm bg-white text-primary' , {
+                          "bg-primary text-white": true
+                        }
+                      )}>
+                         {project.name[0]}
+                      </div>
+                    </div>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )
+            })}
+
+           </SidebarMenu>
+        </SidebarGroupContent>
+
+        </SidebarGroup>
+       </SidebarContent>
+    </Sidebar>
+  )
 }
