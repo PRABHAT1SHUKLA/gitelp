@@ -2,11 +2,14 @@
 
 import React from "react";
 
-import { Bot, CreditCard, Handshake, LayoutDashboard } from "lucide-react";
+import { Bot, CreditCard, Handshake, LayoutDashboard, Plus } from "lucide-react";
 import { Sidebar,SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { useSidebar } from "@/components/ui/sidebar";
 
 const items = [
   {
@@ -47,10 +50,22 @@ const projects = [
 export default function AppSidebar() {
 
   const pathName = usePathname()
+
+  const { open } = useSidebar()
   return (
     <Sidebar collapsible="icon" variant="floating">
        <SidebarHeader>
-          Logo
+           <div className=" flex gap-2">
+            <Image src="/logo.jpg" alt="logo" width={40} height={40} />
+
+            {open && (
+              <h1 className="text-xl font-bold text-primary/80 ">
+                Gitelp
+              </h1>
+            )}
+
+           </div>
+
        </SidebarHeader>
 
        <SidebarContent>
@@ -108,11 +123,23 @@ export default function AppSidebar() {
                       )}>
                          {project.name[0]}
                       </div>
+                      <span> {project.name}</span>
                     </div>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               )
             })}
+
+            <div className="h-2"></div>
+
+            <SidebarMenuItem>
+              <Link href='/create'>
+                <Button size="sm" variant={'outline'} className="w-fit">
+                  <Plus/>
+                  Create Project
+                </Button>
+              </Link>
+            </SidebarMenuItem>
 
            </SidebarMenu>
         </SidebarGroupContent>
