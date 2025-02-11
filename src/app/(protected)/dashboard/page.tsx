@@ -13,6 +13,8 @@ const DashboardPage = () => {
   return (
     <div>
       <div className="flex items-center justify-between flex-wrap gap-y-4">
+
+        {/* github link */}
         <div className="w-fit rounded-md bg-gray-950 px-4 py-3">
           <div className="flex items-center">
             <Github className="size-5 text-white " />
@@ -33,8 +35,26 @@ const DashboardPage = () => {
 
         </div>
 
+        <div className="h-4 "></div>
+
+        <div className="flex items-center gap-4">
+          TeamMembers
+          inviteButton
+          ArchiveButon
+        </div>
+
 
       </div>
+
+      <div className="mt-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-5">
+               AskQuestionCArd
+               MeetingCard
+          </div>
+      </div>
+
+       <div className="mt-8"></div>
+       Commit log
     </div>
   )
 }
