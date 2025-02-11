@@ -1,3 +1,4 @@
+import { db } from "@/server/db"
 import { Octokit} from "octokit"
 
 
@@ -37,4 +38,34 @@ export const getCommitHashes = async (githubUrl : string) : Promise<Response[]>=
 
 
 
+
+async function fetchProjectGithubUrl(projectId : string){
+  const project = await db.project.findUnique({
+    where:{
+      id: projectId
+    },
+    select:{
+      githubUrl:true
+    }
+  })
+
+  if(!project?.githubUrl){
+        throw new Error("No Github url present")
+  }
+
+
+  return { project , githubUrl: project?.githubUrl}
+}
+
 //to run any .ts  file inpendently  use tsx
+
+async function filterUnprocessedCommits(projectId:string , commitHashes : Response[]){
+    
+   const  processedCommits = await db.commit.findMany({
+    where:{ projectId}
+   })
+
+   const unprocessedCommits = commitHashes.filter((commit) => !processedCommits.some((processedCommit) => processedCommit.commitHash === commit.commitHash ))
+
+   return unprocessedCommits
+}
