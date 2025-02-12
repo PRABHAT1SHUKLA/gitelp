@@ -1,5 +1,7 @@
 import { db } from "@/server/db"
 import { Octokit} from "octokit"
+import axios from "axios"
+import { aiSummariseCommit } from "./gemini"
 
 
 export const octokit =  new Octokit({
@@ -50,6 +52,17 @@ export const pollCommits =  async(projectId : string) =>{
   return unprocessedCommits
 }
 
+
+async function summariseCommit(githubUrl:string , commitHash: string){
+  //get the commit difference , then pass it into ai
+   
+  const {data} = await axios.get(`${githubUrl}/commit/${commitHash}.diff`,{
+    headers:{
+      Accept : 'application/vnd.github.v3.diff'
+    }
+  })
+ return await aiSummariseCommit(data) || ""
+}
 
 
 

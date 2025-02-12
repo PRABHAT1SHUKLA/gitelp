@@ -7,7 +7,7 @@ const model = genAI.getGenerativeModel({
   model : 'gemini-1.5-flash'
 })
 
-export const summariseCommit = async (diff : string) => {
+export const aiSummariseCommit = async (diff : string) => {
 
   const response = await model.generateContent([
     `You are an expert programmer, and you are trying to summarize a git diff.
@@ -63,7 +63,7 @@ It is given only as an example of appropriate comments.`,
   return response.response.text()
 }
 
-console.log(await summariseCommit(`diff --git a/packages/react-native-renderer/src/ReactNativeTypes.js b/packages/react-native-renderer/src/ReactNativeTypes.js
+console.log(await aiSummariseCommit(`diff --git a/packages/react-native-renderer/src/ReactNativeTypes.js b/packages/react-native-renderer/src/ReactNativeTypes.js
 index 07030a6b7f6c7..8bce919d385e9 100644
 --- a/packages/react-native-renderer/src/ReactNativeTypes.js
 +++ b/packages/react-native-renderer/src/ReactNativeTypes.js
