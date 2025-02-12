@@ -31,12 +31,13 @@ export const getCommitHashes = async (githubUrl : string) : Promise<Response[]>=
    })
 
    const sortedCommits = data.sort((a:any , b:any) => new Date(b.commit.author.date).getTime() - new Date(a.commit.author.date).getTime() ) as any[]
-
+  
+  
    return sortedCommits.slice(0,10).map((commit:any) =>({
            commitHash : commit.sha as string,
            commitMessage : commit.commit.message ?? "",
            commitAuthorName : commit.commit?.author?.name ?? "",
-           commitAuthorAvatar : commit.commit?.author?.avatar_url ?? "",
+           commitAuthorAvatar : commit?.author?.avatar_url ?? "",
            commitDate : commit.commit?.author?.date ?? ""
    }))
 
@@ -47,7 +48,10 @@ export const getCommitHashes = async (githubUrl : string) : Promise<Response[]>=
 export const pollCommits =  async(projectId : string) =>{
   const {project , githubUrl} = await fetchProjectGithubUrl(projectId)
   const commitHashes = await getCommitHashes(githubUrl)
+  console.log("commithashes before processing", commitHashes)
   const unprocessedCommits  = await filterUnprocessedCommits(projectId,commitHashes)
+
+  console.log("unporcessed about to save",unprocessedCommits)
   
   const summaryResponses = await Promise.allSettled(unprocessedCommits.map(commit => {
     return summariseCommit(githubUrl , commit.commitHash)
@@ -64,7 +68,7 @@ export const pollCommits =  async(projectId : string) =>{
   const commits = await db.commit.createMany({
     data: summaries.map((summary, index) => {
       console.log(`processing commit ${index}`)
-
+      
       return {
            projectId: projectId,
            commitHash: unprocessedCommits[index]!.commitHash,

@@ -66,7 +66,7 @@ model Commit {
     commitMessage      String
     commitHash         String
     commitAuthorName   String
-    commitAuthorAvatar String
+    commitAuthorAvatar String?
     commitDate         DateTime
 
     summary String
