@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI} from "@google/generative-ai"
+import { Document } from "@langchain/core/documents"
 
 //Remember in a standalone ts file if needed to run , process.env is unable to access this file for this a package dotenc needs to be installed if want to run this ts file explicitly, otherwise for testing purposes apikey can be hardcoded. 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
@@ -63,15 +64,27 @@ It is given only as an example of appropriate comments.`,
   return response.response.text()
 }
 
-console.log(await aiSummariseCommit(`diff --git a/packages/react-native-renderer/src/ReactNativeTypes.js b/packages/react-native-renderer/src/ReactNativeTypes.js
-index 07030a6b7f6c7..8bce919d385e9 100644
---- a/packages/react-native-renderer/src/ReactNativeTypes.js
-+++ b/packages/react-native-renderer/src/ReactNativeTypes.js
-@@ -10,6 +10,7 @@
-  */
- 
- import type {ElementRef, ElementType, MixedElement} from 'react';
-+// $FlowFixMe[nonstrict-import] TODO(@rubennorte)
- import {type PublicRootInstance} from 'react-native/Libraries/ReactPrivate/ReactNativePrivateInterface';
- 
- export type MeasureOnSuccessCallback = (`))
+export async function summariseCode(doc: Document){
+
+
+  const code = doc.pageContent.slice(0,10000);
+  const response = await model.generateContent([
+    `You are an intelligent senior software engineer who specilizes in onboarding junior software engineer onto projects .`,
+    ` You are onboarding a junior software engineer and explaining to them purpose of ${doc.metadata.source} file
+    
+    Here is the code:
+    
+    ---
+    ${code}
+    ---
+    
+    Give a summary no more than 100 words for the above`,
+    
+    
+  ]);
+
+
+  return response.response.text()
+}
+
+
