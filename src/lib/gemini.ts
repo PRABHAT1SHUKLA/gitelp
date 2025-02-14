@@ -66,7 +66,8 @@ It is given only as an example of appropriate comments.`,
 
 export async function summariseCode(doc: Document){
 
-
+try{
+  
   const code = doc.pageContent.slice(0,10000);
   const response = await model.generateContent([
     `You are an intelligent senior software engineer who specilizes in onboarding junior software engineer onto projects .`,
@@ -85,6 +86,9 @@ export async function summariseCode(doc: Document){
 
 
   return response.response.text()
+}catch(error){
+  return ''
+}
 }
 
 
