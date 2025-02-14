@@ -29,7 +29,7 @@ const AskQuestionCArd = () => {
     const {output , filesReferences} = await askQuestion(question, project.id)
     setFilesReferences(filesReferences)
     
-    for await(const delta of readStreamableValue(output) ){
+    for await (const delta of readStreamableValue(output) ){
       if(delta){
         setAnswer(ans => ans+delta)
       }
@@ -49,6 +49,12 @@ const AskQuestionCArd = () => {
               <Image src='/logo.jpg' alt="gitelp" width={40} height={40} />
             </DialogTitle>
           </DialogHeader>
+
+          {answer}
+          <h1> File References</h1>
+          {filesReferences.map(file => {
+            return <span>{file.fileName}</span>
+          })}
 
         </DialogContent>
 

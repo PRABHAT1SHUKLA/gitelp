@@ -103,6 +103,6 @@ export async function generateEmbedding(summary:string) {
   return embedding.values
 }
 
-console.log(await generateEmbedding("Prabhat Shukla"))
+
 
 

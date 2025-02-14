@@ -48,10 +48,9 @@ export const getCommitHashes = async (githubUrl : string) : Promise<Response[]>=
 export const pollCommits =  async(projectId : string) =>{
   const {project , githubUrl} = await fetchProjectGithubUrl(projectId)
   const commitHashes = await getCommitHashes(githubUrl)
-  console.log("commithashes before processing", commitHashes)
   const unprocessedCommits  = await filterUnprocessedCommits(projectId,commitHashes)
 
-  console.log("unporcessed about to save",unprocessedCommits)
+
   
   const summaryResponses = await Promise.allSettled(unprocessedCommits.map(commit => {
     return summariseCommit(githubUrl , commit.commitHash)
