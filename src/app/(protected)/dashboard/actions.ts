@@ -48,15 +48,15 @@ ORDER BY similarity DESC
 LIMIT 10
 ` as { fileName: string; sourceCode: string; summary: string; similarity: number }[];
 
-console.log("Raw result:", result);
+// console.log("Raw result:", result);
 
-console.log("Raw result:", result[0]);
+// console.log("Raw result:", result[0]);
 
 //console.log("Query results with similarities:", result);
 // console.log("result of index 0 ", JSON.stringify(result[0]))
 let context = ''
 for (const doc of result) {
-  context += `source: ${doc.fileName}\ncode content: ${doc.sourceCode}\n summary of file: ${doc.summary}\n similarity: ${doc.similarity}\n\n`
+  context += `source: ${doc.fileName}\ncode content: ${doc.sourceCode}\n summary of file: ${doc.summary}\n\n`
 }
 
 
