@@ -16,30 +16,67 @@ export async function askQuestion(question: string, projectId: string) {
 
   const queryVector = await generateEmbedding(question)
 
-  console.log("queryvector", queryVector)
+
+  console.log("Vector Type:", typeof queryVector);
+  console.log("Vector Length:", queryVector.length);
   const vectorQuery = `[${queryVector.join(',')}]`
-  console.log("vectorquery", vectorQuery)
-  console.log("projectId of file ", projectId)
 
-  const result = await db.$queryRaw`
-    SELECT "fileName","sourceCode", "summary",
-    1-("summaryEmbedding" <=> ${vectorQuery}::vector) AS similarity
+
+ 
+
+
+  const dataCheck = await db.$queryRaw`
+  SELECT COUNT(*) 
+  FROM "SourceCodeEmbedding" 
+  WHERE "projectId" = ${projectId}
+`;
+console.log("Number of embeddings found:", dataCheck);
+
+
+
+// Try with a lower threshold and debug similarity scores
+const result = await db.$queryRaw`
+  WITH vector_data AS (
+    SELECT 
+      "fileName",
+      "sourceCode", 
+      "summary",
+      "summaryEmbedding"::vector as vec_embedding,
+      1-(("summaryEmbedding"::vector) <=> ${vectorQuery}::vector) AS similarity
     FROM "SourceCodeEmbedding"
-    WHERE 1-("summaryEmbedding" <=> ${vectorQuery}::vector) > .5
-    AND "projectId" = ${projectId}
-    ORDER BY similarity DESC
-       LIMIT 10
-    ` as { fileName: string; sourceCode: string; summary: string }[]
+    WHERE "projectId" = ${projectId}
+  )
+  SELECT 
+    "fileName",
+    "sourceCode", 
+    "summary",
+    similarity
+  FROM vector_data
+  WHERE similarity > 0.5  -- Lowered threshold for testing
+  ORDER BY similarity DESC
+  LIMIT 10
+` as { fileName: string; sourceCode: string; summary: string; similarity: number }[]
 
-  let context = ''
+//console.log("Query results with similarities:", result);
+console.log("result length", result.length())
+let context = ''
+for (const doc of result) {
+  context += `source: ${doc.fileName}\ncode content: ${doc.sourceCode}\n summary of file: ${doc.summary}\n similarity: ${doc.similarity}\n\n`
+}
 
-  console.log("result added",result)
 
-  for (const doc of result) {
-    context += `source: ${doc.fileName}\ncode content: ${doc.sourceCode}\n summary of file: ${doc.summary}\n\n`
-  }
+//console.log("context added or not", context);
 
-   console.log("context added or not",context);
+// If we still get no results, let's check the actual vector values
+if (result.length === 0) {
+  const vectorCheck = await db.$queryRaw`
+    SELECT "fileName", "summaryEmbedding"::text 
+    FROM "SourceCodeEmbedding" 
+    WHERE "projectId" = ${projectId}
+    LIMIT 1
+  `;
+  console.log("Sample vector data:", vectorCheck);
+}
 
   (async () => {
     const { textStream } = await streamText({

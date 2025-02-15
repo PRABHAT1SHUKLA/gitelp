@@ -39,12 +39,16 @@ export const indexGithubRepo = async (projectId: string , githubUrl : string , g
       }
      })
 
+     console.log('embedding about to enter the summaryembeddings into the db', embedding)
+     console.log("embedding.embedding",embedding.embedding)
+     
 
      await db.$executeRaw`
      UPDATE "SourceCodeEmbedding"
-     SET  "summaryEmbedding" = ${embedding.embedding}::vector
-     WHERE "id" =${sourceCodeEmbedding.id}
-     `
+     SET "summaryEmbedding" = ${JSON.stringify(embedding.embedding)}::vector
+     WHERE "id" = ${sourceCodeEmbedding.id}
+   `
+   
       
   }))
 

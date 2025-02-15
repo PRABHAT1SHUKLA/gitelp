@@ -1,18 +1,25 @@
 import { db } from '@/server/db';
 
-async function checkSummaryEmbeddings(projectId: string) {
+async function fetchSummaryEmbeddings(projectId: string) {
   try {
-    const embeddings = await db.$queryRaw`
-      SELECT "summaryEmbedding" 
-      FROM "SourceCodeEmbedding" 
+    const results = await db.$queryRaw<
+      { id: string; summaryEmbedding: string }[]
+    >`
+      SELECT "id", "summaryEmbedding"::TEXT
+      FROM "SourceCodeEmbedding"
       WHERE "projectId" = ${projectId}
     `;
 
-    console.log("Summary Embeddings:", embeddings);
+    console.log('Fetched summary embeddings:', results);
+    return results.map(result => ({
+      ...result,
+      summaryEmbedding: JSON.parse(result.summaryEmbedding), // Convert back to JSON
+    }));
   } catch (error) {
-    console.error("Error fetching embeddings:", error);
+    console.error('Error fetching summary embeddings:', error);
+    throw new Error('Failed to fetch summary embeddings');
   }
 }
 
-// Call the function with your projectId
-checkSummaryEmbeddings(cm739xwx80007ufvmcdd2uelq);
+
+fetchSummaryEmbeddings('cm75ullpd0032xxng756d0151').then(console.log);
