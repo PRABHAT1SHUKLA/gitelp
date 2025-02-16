@@ -6,7 +6,7 @@ const checkProjectSummaryEmbedding = async (projectId: string) => {
     FROM "SourceCodeEmbedding"
     WHERE "projectId" = ${projectId};
   `;
-  if (result.length === 0) {
+  if (result=== 0) {
     console.log('No records found for the specified projectId:', projectId);
   } else {
     console.log('Records found for projectId:', projectId);

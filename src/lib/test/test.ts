@@ -110,7 +110,7 @@ export async function testFetchUserProjectsByUserId(userId: string) {
     console.log(`Projects associated with user ${userId}:`, result);
 }
 
-//"cm75ullpd0032xxng756d0151"
+//"cm75ullpd0032xxng756d0151".replace(/-/g, '')
 
  // Ensure you import your Prisma instance
 
@@ -122,7 +122,7 @@ async function fetchSummaryEmbeddingsByProjectId(projectId: string) {
         id: true,
         fileName: true,
         summary: true,
-        summaryEmbeddings: true, // Explicitly selecting embeddings
+       // Explicitly selecting embeddings
         projectId: true
       }
     });
