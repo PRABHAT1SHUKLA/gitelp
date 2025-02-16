@@ -11,6 +11,9 @@ import React, { useState } from 'react'
 import { askQuestion } from './actions'
 import { readStreamableValue } from 'ai/rsc'
 import CodeReferences from './code-references'
+import { api } from '@/trpc/react'
+import { toast } from 'sonner'
+
 
 const AskQuestionCArd = () => {
   const { project } = useProject()
@@ -19,6 +22,7 @@ const AskQuestionCArd = () => {
   const [loading , setLoading] = useState(false)
   const [filesReferences, setFilesReferences] = useState<{fileName:string , sourceCode : string , summary:string}[]>([])
   const [answer , setAnswer] = useState('')
+  const saveAnswer =  api.project.saveAnswer.useMutation()
 
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -50,9 +54,32 @@ const AskQuestionCArd = () => {
 
         <DialogContent className='sm:max-w-[80vw]'>
           <DialogHeader>
-            <DialogTitle>
+             <div className="flex items-center gap-2">
+             <DialogTitle>
               <Image src='/logo.jpg' alt="gitelp" width={40} height={40} />
             </DialogTitle>
+
+            <Button disabled={saveAnswer.isPending} variant={'outline'} onClick={()=>{
+              saveAnswer.mutate({
+                projectId: project!.id,
+                question,
+                answer,
+                filesReferences
+              } ,{
+                onSuccess: ()=>{
+                  toast.success('Answer saved!')
+                },
+                onError:()=>{
+                  toast.error('Error saving answer')
+                }
+              })
+            }}>
+              Save Answer
+
+            </Button>
+
+             </div>
+           
           </DialogHeader>
 
         <MDEditor.Markdown source={answer} className='max-w-[70vw] !h-full max-h-[40vh] overflow-scroll' />
