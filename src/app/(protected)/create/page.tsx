@@ -22,25 +22,21 @@ const CreatePage = () => {
 
   const refetch = useRefetch()
 
-  function onSubmit(data: FormInput) {
-   
-    createProject.mutate({
-      githubUrl: data.repoUrl,
-      name: data.projectName,
-      githubToken: data.githubToken
-    } , {
-      onSuccess: () =>{
-        toast.success("Project created Successfully")
-        refetch()
-        reset()
-      } ,
-      onError: ()=>{
-        toast.error("Error creating project")
-      }
-    } )
-   return true
-  }
+  async function onSubmit(data: FormInput) {
+    try {
+      await createProject.mutateAsync({
+        githubUrl: data.repoUrl,
+        name: data.projectName,
+        githubToken: data.githubToken,
+      });
 
+      toast.success("Project created Successfully");
+      await refetch();
+      reset();
+    } catch (error) {
+      toast.error("Error creating project");
+    }
+  }
   return (
     <div className='flex items-center gap-12 h-full justify-center'>
       <img src='/git.svg' className='h-56 w-auto' />

@@ -25,12 +25,12 @@ export async function askQuestion(question: string, projectId: string) {
  
 
 
-  const dataCheck = await db.$queryRaw`
-  SELECT COUNT(*) 
-  FROM "SourceCodeEmbedding" 
-  WHERE "projectId" = ${projectId}
-`;
-console.log("Number of embeddings found:", dataCheck);
+//   const dataCheck = await db.$queryRaw`
+//   SELECT COUNT(*) 
+//   FROM "SourceCodeEmbedding" 
+//   WHERE "projectId" = ${projectId}
+// `;
+// console.log("Number of embeddings found:", dataCheck);
 
 
 
@@ -63,15 +63,15 @@ for (const doc of result) {
 // console.log("context added or not", context);
 
 // If we still get no results, let's check the actual vector values
-if (result.length === 0) {
-  const vectorCheck = await db.$queryRaw`
-    SELECT "fileName", "summaryEmbedding"::text 
-    FROM "SourceCodeEmbedding" 
-    WHERE "projectId" = ${projectId}
-    LIMIT 1
-  `;
- // console.log("Sample vector data:", vectorCheck);
-}
+// if (result.length === 0) {
+//   const vectorCheck = await db.$queryRaw`
+//     SELECT "fileName", "summaryEmbedding"::text 
+//     FROM "SourceCodeEmbedding" 
+//     WHERE "projectId" = ${projectId}
+//     LIMIT 1
+//   `;
+//  // console.log("Sample vector data:", vectorCheck);
+// }
 
   (async () => {
     const { textStream } = await streamText({ 
