@@ -1,9 +1,11 @@
 'use client'
-import { Sheet, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import useProject from '@/hooks/use-project'
 import { api } from '@/trpc/react'
 import React, { useState } from 'react'
 import AskQuestionCArd from '../dashboard/ask-question-card'
+import MDEditor from '@uiw/react-md-editor'
+import CodeReferences from '../dashboard/code-references'
 
 const QaPage = () => {
 
@@ -46,6 +48,19 @@ const QaPage = () => {
           </React.Fragment>
         })}
       </div>
+         
+         {question &&  (
+          <SheetContent className='sm:max-w-[80vw]'>
+             <SheetHeader>
+                <SheetTitle>
+                  {question.question}
+                </SheetTitle>
+                <MDEditor.Markdown source={question.answer} />
+                <CodeReferences fileReferences={(question.filesReferences ?? []) as any}/>
+             </SheetHeader>
+          </SheetContent>
+         )}
+
     </Sheet>
   )
 }
