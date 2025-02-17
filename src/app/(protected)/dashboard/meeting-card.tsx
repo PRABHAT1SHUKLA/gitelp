@@ -1,6 +1,6 @@
 'use client'
 
-import { CircularProgressbar } from 'react-circular-progressbar'
+import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { uploadFile } from '@/lib/cloudinary'
@@ -82,6 +82,11 @@ const MeetingCard = () => {
             <CircularProgressbar
               value={progress}
               text={`${Math.round(progress)}%`}
+              className='size-20'
+              styles={buildStyles({
+                pathColor: '#000',
+                textColor:'#000'
+              })}
             />
           </div>
           <p className="text-sm text-gray-500 text-center">
