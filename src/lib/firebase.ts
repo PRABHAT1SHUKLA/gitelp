@@ -6,12 +6,12 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDY_6Q6HvMPMCtxW3JlnN3e-C2W6C6rXsw",
-  authDomain: "gitelp-1024e.firebaseapp.com",
-  projectId: "gitelp-1024e",
-  storageBucket: "gitelp-1024e.firebasestorage.app",
-  messagingSenderId: "233137051276",
-  appId: "1:233137051276:web:1acff8e878c089d00a0da9"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
 // Initialize Firebase
