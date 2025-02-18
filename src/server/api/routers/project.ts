@@ -100,7 +100,8 @@ export const projectRouter = createTRPCRouter({
      projectId : z.string()
   })).query(async({input , ctx}) =>{
     return await ctx.db.meeting.findMany({
-      where: { projectId: input.projectId}
+      where: { projectId: input.projectId},
+      include:{issues:true}
     })
   })
 })
