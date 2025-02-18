@@ -48,6 +48,12 @@ const MeetingPage = () => {
             </div>
 
           </div>
+
+           <div className="flex items-center flex-none gap-x-4">
+             <Link href={`/meetings/${meeting.id}`} className='bg-black text-pretty text-white rounded-md p-2 hover:bg-green-600'>
+                View Meeting
+             </Link>
+           </div>
         </li>
       ))}
      </ul>
