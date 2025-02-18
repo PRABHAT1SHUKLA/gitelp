@@ -24,7 +24,9 @@ export async function POST(req: NextRequest){
   try{
     const body = await req.json()
     const {meetingUrl , projectId , meetingId} = bodyParser.parse(body)
+   
     const {summaries} = await processMeeting(meetingUrl)
+    console.log("summaries",summaries)
     await db.issue.createMany({
          data: summaries.map(summary =>({
           start : summary.start,

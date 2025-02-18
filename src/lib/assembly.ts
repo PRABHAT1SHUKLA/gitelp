@@ -10,7 +10,7 @@ function msToTime(ms: number){
   }
 
   export const processMeeting = async (meetingUrl:string) =>{
-       
+       console.log("here inside process assembly")
     const transcript = await client.transcripts.transcribe({
       audio: meetingUrl,
       auto_chapters:true,
@@ -26,6 +26,7 @@ function msToTime(ms: number){
 
     if(!transcript.text) throw new Error("No transcript found")
 
+      console.log("summaries", summaries)
       return {
          summaries
       }

@@ -66,14 +66,16 @@ const MeetingCard = () => {
         } , {
           onSuccess: (meeting)=>{
             toast.success("Meeting Uploaded successfully")
+           
             router.push('/meetings')
             processMeeting.mutateAsync({
               meetingUrl:downloadURL,
-              meetingId:uploadMeeting.data!.id,
+              meetingId:meeting.id,
               projectId:project.id  })
           } ,
           onError: ()=>{
             toast.error("Error Uploading Meeting")
+            
           }
         })
         
@@ -81,7 +83,7 @@ const MeetingCard = () => {
         setProgress(100)
         
         console.log("Upload completed:", downloadURL)
-        window.alert(`File uploaded successfully! ${downloadURL}`)
+   
       } catch (error) {
         console.error("Upload failed:", error)
         window.alert("Failed to upload file. Please try again.")
