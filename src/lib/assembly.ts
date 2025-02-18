@@ -27,7 +27,7 @@ function msToTime(ms: number){
     if(!transcript.text) throw new Error("No transcript found")
 
       return {
-        transcript, summaries
+         summaries
       }
   }
 
