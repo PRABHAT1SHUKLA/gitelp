@@ -1,6 +1,7 @@
 
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import useProject from '@/hooks/use-project'
@@ -39,6 +40,8 @@ const InviteButton = () => {
          
         </DialogContent>
       </Dialog>
+
+      <Button size='sm' onClick={()=>setOpen(true)}> Invite Members</Button>
     </>
   )
 }
