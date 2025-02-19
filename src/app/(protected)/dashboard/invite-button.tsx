@@ -31,11 +31,13 @@ const InviteButton = () => {
             className='mt-4'
             readOnly
             onClick={()=>{
-              navigator.clipboard.writeText(`${window.location.origin}/join/${projectId}`)
-              toast.success("Copied to clipboard")
+              if (typeof window !== "undefined") {
+                navigator.clipboard.writeText(`${window.location.origin}/join/${projectId}`)
+                toast.success("Copied to clipboard")
+              }
 
             }}
-            value={`${window.location.origin}/join/${projectId}`}
+            value={typeof window !== "undefined" ? `${window.location.origin}/join/${projectId}` : ""}
             />
          
         </DialogContent>
