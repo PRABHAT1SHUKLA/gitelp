@@ -7,6 +7,7 @@ import Link from "next/link"
 import CommitLog from "./commit-log"
 import AskQuestionCArd from "./ask-question-card"
 import MeetingCard from "./meeting-card"
+import ArchiveButton from "./archive-button"
 
 
 const DashboardPage = () => {
@@ -45,7 +46,7 @@ const DashboardPage = () => {
         <div className="flex items-center gap-4">
           TeamMembers
           inviteButton
-          ArchiveButon
+         <ArchiveButton/>
         </div>
 
 

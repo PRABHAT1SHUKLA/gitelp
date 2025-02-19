@@ -13,7 +13,7 @@ const ArchiveButton = () => {
  const refetch = useRefetch()
 
   return (
-     <Button onClick={()=>{
+     <Button disabled={archiveProject.isPending} size='sm' variant='destructive' onClick={()=>{
       const confirm = window.confirm("are you sure you want to archive this project?")
 
       if(confirm){
