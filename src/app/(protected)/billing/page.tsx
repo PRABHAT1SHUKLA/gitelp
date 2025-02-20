@@ -5,14 +5,31 @@ import React, { useState } from 'react'
 
 const BillingPage = () => {
   
-  const {data:credits} = api.project.getMyCredits.useQuery()
+  const {data:user} = api.project.getMyCredits.useQuery()
   const [creditsToBuy , setCreditsToBuy] = useState<number[]>([100])
 
   const creditsToBuyAmount = creditsToBuy[0]!
-  
+  const price = (creditsToBuyAmount/50).toFixed(2)
 
   return (
-    <div>BillingPage</div>
+    <div>
+      <h1 className='text-xl font-semibold'>
+          Billing
+      </h1>
+
+      <div className="h-2"></div>
+      <p className='text-sm text-gray-500'>
+        You currently have {user?.credits} credits.
+      </p>
+
+      <div className="h-2"></div>
+
+      <div className="bg-blue-50 px-4 py-2 rounded-md border border-blue-200 text-blue-700">
+        <div className="flex items-center gap-2">
+          
+        </div>
+      </div>
+    </div>
   )
 }
 
