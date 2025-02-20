@@ -28,6 +28,8 @@ model User {
     userToProjects UserToProject[]
 
     questionAsked Question[]
+
+    stripeTransactions  StripeTransaction[]
 }
 
 model Project {
@@ -111,6 +113,17 @@ model Issue {
 enum MeetingStatus {
     PROCESSING
     FULFILLED
+}
+
+model StripeTransaction {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId  String
+    user    User  @relation(fields: [userId],references: [id])
+
+    credits Int
 }
 
 model Question {
