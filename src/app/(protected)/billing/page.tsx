@@ -5,21 +5,12 @@ import { Slider } from '@/components/ui/slider'
 import { createCheckoutSession } from '@/lib/stripe'
 import { api } from '@/trpc/react'
 import { Info } from 'lucide-react'
-import React, { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import React, { useState } from 'react'
 
 const BillingPage = () => {
-  const searchParams = useSearchParams()
-  const paymentSuccess = searchParams.get('payment_success')
-  
-  // Get query client to enable manual refetching
-  const { data: user, refetch } = api.project.getMyCredits.useQuery()
-  const [creditsToBuy, setCreditsToBuy] = useState<number[]>([100])
 
-  // Refetch when component mounts or when redirected back from successful payment
-  useEffect(() => {
-    refetch()
-  }, [paymentSuccess, refetch])
+  const {data:user} = api.project.getMyCredits.useQuery()
+  const [creditsToBuy , setCreditsToBuy] = useState<number[]>([100])
 
   const creditsToBuyAmount = creditsToBuy[0]!
   const price = (creditsToBuyAmount/50).toFixed(2)
@@ -29,12 +20,6 @@ const BillingPage = () => {
       <h1 className='text-xl font-semibold'>
           Billing
       </h1>
-
-      {paymentSuccess && (
-        <div className="bg-green-50 px-4 py-2 my-2 rounded-md border border-green-200 text-green-700">
-          Payment successful! Your credits have been updated.
-        </div>
-      )}
 
       <div className="h-2"></div>
       <p className='text-sm text-gray-500'>
