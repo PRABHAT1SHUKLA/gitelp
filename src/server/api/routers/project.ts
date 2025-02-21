@@ -14,6 +14,19 @@ export const projectRouter = createTRPCRouter({
   ).mutation(async ({ ctx, input }) => {
     console.log("userId present",ctx.user.userId!)
 
+    const user = await ctx.db.user.findUnique({ where: {id : ctx.user.userId!} , select : {credits:true}})
+     
+    if(!user ){
+      throw new Error("User not found")
+    }
+ 
+    const currentCredits = user.credits || 0
+    const fileCount = await checkCredits(input.githubUrl , input.githubToken)
+
+    if(currentCredits < fileCount){
+      throw new Error("Insufficient Credits")
+    }
+
     const project = await ctx.db.project.create({
       data: {
         githubUrl: input.githubUrl,
@@ -27,6 +40,7 @@ export const projectRouter = createTRPCRouter({
     })
    await indexGithubRepo(project.id , input.githubUrl , input.githubToken)
    await pollCommits(project.id)
+   await ctx.db.user.update({where:{ id : ctx.user.userId!} , data:{ credits : { decrement : fileCount}}})
    return project 
   }),
   getProjects: protectedProcedure.query(async({ctx}) => {
