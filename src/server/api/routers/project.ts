@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { pollCommits } from "@/lib/github";
-import { indexGithubRepo } from "@/lib/github-loader";
+import { checkCredits, indexGithubRepo } from "@/lib/github-loader";
 import { db } from "@/server/db";
 
 export const projectRouter = createTRPCRouter({
@@ -134,5 +134,12 @@ export const projectRouter = createTRPCRouter({
 
   getMyCredits: protectedProcedure.query(async ({ctx}) =>{
     return await ctx.db.user.findUnique({where:{id : ctx.user.userId!} , select:{credits: true}})
+  }),
+
+  checkCredits : protectedProcedure.input(z.object({githubUrl : z.string() , githubToken: z.string().optional() })).mutation(async({ctx,input}) =>{
+      const fileCount = await checkCredits(input.githubUrl , input.githubToken)
+      const userCredits = await ctx.db.user.findUnique({where:{id: ctx.user.userId!} , select: {credits: true}})
+      return { fileCount , userCredits: userCredits?.credits || 0}
   })
+
 })
